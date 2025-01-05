@@ -1,45 +1,44 @@
 // src/services/facebookPixel.ts
-import ReactPixel from 'react-facebook-pixel';
+import ReactPixel from "react-facebook-pixel";
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID;
 
 export const initPixel = () => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  const advancedMatching = { em: 'some@email.com' }; // Optional
   const options = {
     autoConfig: true,
-    debug: process.env.NODE_ENV !== 'production',
+    debug: process.env.NODE_ENV !== "production",
   };
 
   if (PIXEL_ID) {
-    ReactPixel.init(PIXEL_ID, advancedMatching, options);
+    ReactPixel.init(PIXEL_ID, undefined, options);
   }
 };
 
 export const trackLogin = (userId: string) => {
-  ReactPixel.track('Login', {
-    userId: userId
+  ReactPixel.track("Login", {
+    userId: userId,
   });
 };
 
 export const trackNewsCreated = (newsId: string, title: string) => {
-  ReactPixel.track('NewsCreated', {
+  ReactPixel.track("NewsCreated", {
     newsId,
-    title
+    title,
   });
 };
 
 export const trackNewsReviewed = (newsId: string, status: string) => {
-  ReactPixel.track('NewsReviewed', {
+  ReactPixel.track("NewsReviewed", {
     newsId,
-    status
+    status,
   });
 };
 
 export const trackWeatherSearch = (city: string) => {
-  ReactPixel.track('WeatherSearch', {
-    city
+  ReactPixel.track("WeatherSearch", {
+    city,
   });
 };
 

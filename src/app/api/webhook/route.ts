@@ -1,21 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
-import { headers } from "next/headers";
-import Stripe from "stripe";
+import { stripe_server } from "@/lib/stripe-server";
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2024-12-18.acacia",
-});
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const body = await request.text();
-  const sig = headers().get("stripe-signature")!;
+  const sig = request.headers.get("stripe-signature")!;
 
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+    event = stripe_server.webhooks.constructEvent(body, sig, endpointSecret);
   } catch (err) {
     return NextResponse.json(
       { error: "Webhook signature verification failed" },

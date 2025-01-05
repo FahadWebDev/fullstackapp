@@ -1,11 +1,11 @@
 // components/SubscriptionPlans.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getStripe } from "@/lib/stripe";
 import { Check } from "lucide-react";
 import ActiveSubscription from "./ActiveSubscription";
+import { getStripe } from "@/lib/stripe-client";
 
 const plans = [
   {

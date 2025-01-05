@@ -1,10 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { adminDb, adminMessaging } from "@/lib/firebase-admin";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+interface RouteParams {
+  params: Promise<{ id: string }>;
+}
+
+// Handle GET requests
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
     const docRef = adminDb.collection("news").doc(id);
@@ -29,10 +31,8 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+// Handle PUT requests
+export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const data = await request.json();
     const { id } = await params;
@@ -46,7 +46,7 @@ export async function PUT(
     }
 
     const newsData = newsDoc.data();
-    const updateData: any = {
+    const updateData: Partial<typeof newsData> = {
       updatedAt: new Date().toISOString(),
     };
 
@@ -74,6 +74,7 @@ export async function PUT(
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Error updating news:", error);
     return NextResponse.json(
       { error: "Failed to update news" },
       { status: 500 }
@@ -81,15 +82,14 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+// Handle DELETE requests
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
     await adminDb.collection("news").doc(id).delete();
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Error deleting news:", error);
     return NextResponse.json(
       { error: "Failed to delete news" },
       { status: 500 }

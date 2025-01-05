@@ -1,24 +1,9 @@
 // app/api/fcm-token/route.ts
-import { NextResponse } from "next/server";
-import { adminDb, adminAuth } from "@/lib/firebase-admin";
+import { NextRequest, NextResponse } from "next/server";
+import { adminDb } from "@/lib/firebase-admin";
+import { verifyAuth } from "@/utils/helper";
 
-export async function verifyAuth(request: Request) {
-  try {
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return null;
-    }
-
-    const token = authHeader.split("Bearer ")[1];
-    const decodedToken = await adminAuth.verifyIdToken(token);
-    return decodedToken;
-  } catch (error) {
-    console.error("Auth error:", error);
-    return null;
-  }
-}
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     // Verify authentication
     const decodedToken = await verifyAuth(request);
@@ -59,7 +44,7 @@ export async function POST(request: Request) {
 }
 
 // Get FCM token for a user
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     // Verify authentication
     const decodedToken = await verifyAuth(request);
@@ -93,7 +78,7 @@ export async function GET(request: Request) {
 }
 
 // Delete FCM token
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
     // Verify authentication
     const decodedToken = await verifyAuth(request);

@@ -1,17 +1,13 @@
 import { adminDb } from "@/lib/firebase-admin";
-import { NextResponse } from "next/server";
-import Stripe from "stripe";
-import { verifyAuth } from "../notification/route";
+import { stripe_server } from "@/lib/stripe-server";
+import { verifyAuth } from "@/utils/helper";
+import { NextRequest, NextResponse } from "next/server";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2024-12-18.acacia",
-});
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { priceId, userId } = await request.json();
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await stripe_server.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
@@ -36,7 +32,7 @@ export async function POST(request: Request) {
     );
   }
 }
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     // Verify authentication
     const decodedToken = await verifyAuth(request);

@@ -1,4 +1,5 @@
 import { Stripe, loadStripe } from "@stripe/stripe-js";
+// import { Stripe as BE_Stripe } from "stripe";
 
 let stripePromise: Promise<Stripe | null>;
 
@@ -8,3 +9,4 @@ export const getStripe = () => {
   }
   return stripePromise;
 };
+
