@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
+import NotificationProvider from "@/components/NotificationProvider";
+import { FB_PIXEL_ID } from "@/lib/fpixel";
+import AnalyticsProvider from "@/components/AnalyticsProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +28,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta property="fb:pages" content={FB_PIXEL_ID} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+          <NotificationProvider>
+            <AnalyticsProvider>{children}</AnalyticsProvider>
+          </NotificationProvider>
+        </AuthProvider>
       </body>
     </html>
   );

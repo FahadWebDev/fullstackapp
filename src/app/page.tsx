@@ -1,101 +1,164 @@
-import Image from "next/image";
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
+import Login from "@/components/Login";
+import LogoutButton from "@/components/Logout";
+import MyNews from "@/components/MyNews";
+import { useState } from "react";
+import Weather from "@/components/Weather";
+import Review from "@/components/ReviewNews";
+import SubscriptionPlans from "@/components/SubscriptionPlans";
+
+type Tab = "profile" | "my-news" | "weather" | "review" | "subscription";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState<Tab>("profile");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const isAdmin = user?.email === "fullstackuser2@gmail.com";
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        {user ? (
+          <>
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Welcome, {user.displayName || user.email}
+                  </h2>
+                  <p className="mt-1 text-gray-500">{user.email}</p>
+                </div>
+                <LogoutButton />
+              </div>
+            </div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+              <div className="border-b border-gray-200">
+                <nav className="-mb-px flex space-x-8">
+                  <button
+                    onClick={() => setActiveTab("profile")}
+                    className={`
+                whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm
+                ${
+                  activeTab === "profile"
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }
+              `}
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("my-news")}
+                    className={`
+                whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm
+                ${
+                  activeTab === "my-news"
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }
+              `}
+                  >
+                    My News
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("weather")}
+                    className={`
+                whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm
+                ${
+                  activeTab === "weather"
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }
+              `}
+                  >
+                    Weather
+                  </button>
+
+                  {isAdmin && (
+                    <button
+                      onClick={() => setActiveTab("review")}
+                      className={`
+                  whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm
+                  ${
+                    activeTab === "review"
+                      ? "border-indigo-500 text-indigo-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  }
+                `}
+                    >
+                      Review
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setActiveTab("subscription")}
+                    className={`
+                whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm
+                ${
+                  activeTab === "subscription"
+                    ? "border-indigo-500 text-indigo-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }
+              `}
+                  >
+                    Subscription
+                  </button>
+                </nav>
+              </div>
+
+              {/* Tab Content */}
+              <div className="py-6">
+                {activeTab === "profile" && (
+                  <div className="bg-white shadow rounded-lg p-6">
+                    <h3 className="text-lg font-medium text-gray-900 mb-4">
+                      Profile Information
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">
+                          Email
+                        </label>
+                        <p className="mt-1 text-sm text-gray-900">
+                          {user.email}
+                        </p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">
+                          Display Name
+                        </label>
+                        <p className="mt-1 text-sm text-gray-900">
+                          {user.displayName || "Not set"}
+                        </p>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-500">
+                          Account Created
+                        </label>
+                        <p className="mt-1 text-sm text-gray-900">
+                          {user.metadata.creationTime
+                            ? new Date(
+                                user.metadata.creationTime
+                              ).toLocaleDateString()
+                            : "Not available"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "my-news" && <MyNews />}
+                {activeTab === "weather" && <Weather />}
+                {activeTab === "review" && isAdmin && <Review />}
+                {activeTab === "subscription" && <SubscriptionPlans />}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="text-center">
+            <Login />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
