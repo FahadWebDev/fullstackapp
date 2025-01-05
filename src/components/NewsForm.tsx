@@ -1,4 +1,3 @@
-// components/NewsFormModal.tsx
 "use client";
 
 import { useEffect, useState } from "react";

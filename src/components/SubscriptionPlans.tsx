@@ -1,4 +1,3 @@
-// components/SubscriptionPlans.tsx
 "use client";
 
 import { useState } from "react";
@@ -110,7 +109,6 @@ export default function SubscriptionPlans() {
               key={plan.id}
               className="flex flex-col bg-white rounded-lg shadow-lg overflow-hidden h-full"
             >
-              {/* Header */}
               <div className="px-6 py-8 bg-gray-50 border-b border-gray-200">
                 <h3 className="text-2xl font-semibold text-gray-900">
                   {plan.name}
@@ -125,7 +123,6 @@ export default function SubscriptionPlans() {
                 </p>
               </div>
 
-              {/* Features List */}
               <div className="flex-grow px-6 py-8">
                 <ul className="space-y-4">
                   {plan.features.map((feature) => (
@@ -139,7 +136,6 @@ export default function SubscriptionPlans() {
                 </ul>
               </div>
 
-              {/* Action Button */}
               <div className="px-6 py-8 bg-gray-50 border-t border-gray-200">
                 <button
                   onClick={() => handleSubscribe(plan.priceId)}

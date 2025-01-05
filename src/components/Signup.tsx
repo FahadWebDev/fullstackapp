@@ -30,7 +30,7 @@ export default function Signup() {
       await updateProfile(userCredential.user, {
         displayName: name,
       });
-      router.push("/"); // Redirect to home after successful registration
+      router.push("/");
     } catch (err) {
       console.log("err", err);
       setError("Failed to create an account");

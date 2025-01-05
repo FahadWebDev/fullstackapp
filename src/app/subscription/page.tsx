@@ -1,4 +1,3 @@
-// app/subscription/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -12,10 +11,8 @@ export default function SubscriptionPage() {
 
   const isSuccess = searchParams.get('success') === 'true';
   const isCanceled = searchParams.get('canceled') === 'true';
-//   const sessionId = searchParams.get('session_id');
 
   useEffect(() => {
-    // Redirect to home after 5 seconds
     const timer = setTimeout(() => {
       router.push('/');
     }, 5000);

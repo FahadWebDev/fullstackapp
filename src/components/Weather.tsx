@@ -1,4 +1,3 @@
-// components/Weather.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -72,12 +71,10 @@ export default function Weather() {
     }
   };
 
-  // Popular cities quick selection
   const popularCities = ["London", "New York", "Tokyo", "Paris", "Sydney"];
 
   return (
     <div className="space-y-6">
-      {/* Search Bar */}
       <div className="bg-white rounded-lg shadow-md p-4">
         <form onSubmit={handleSearch} className="flex space-x-2">
           <div className="flex-1">
@@ -97,7 +94,6 @@ export default function Weather() {
           </button>
         </form>
 
-        {/* Popular Cities */}
         <div className="mt-4">
           <p className="text-sm text-gray-500 mb-2">Popular Cities:</p>
           <div className="flex flex-wrap gap-2">
@@ -118,7 +114,6 @@ export default function Weather() {
         </div>
       </div>
 
-      {/* Weather Display */}
       {loading ? (
         <div className="flex justify-center items-center min-h-[400px]">
           <Loader className="h-8 w-8 animate-spin text-indigo-600" />

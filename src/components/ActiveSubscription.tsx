@@ -22,7 +22,6 @@ export default function ActiveSubscription() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Get status badge styling
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "active":
