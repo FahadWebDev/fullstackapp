@@ -9,7 +9,6 @@ The News Portal is a web application that allows users to create, manage, and vi
 - npm run dev
 
 
-
 ## Key Features
 
 ### 1. Authentication System
