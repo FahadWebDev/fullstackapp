@@ -3,6 +3,13 @@
 ## Overview
 The News Portal is a web application that allows users to create, manage, and view news articles with a subscription-based system. The application includes user authentication, news management, weather information, and subscription features.
 
+
+## Instructions to run code
+- npm i
+- npm run dev
+
+
+
 ## Key Features
 
 ### 1. Authentication System
