@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       const userId = session.metadata?.userId;
       const subscriptionId = session.subscription as string;
 
-      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      const subscription = await stripe_server.subscriptions.retrieve(subscriptionId);
       const priceId = subscription.items.data[0].price.id;
 
       // Save subscription with original price ID
