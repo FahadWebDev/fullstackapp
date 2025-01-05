@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { fcmToken } = await request.json();
+    const { fcmToken } = await request?.json();
 
     if (!fcmToken) {
       return NextResponse.json(

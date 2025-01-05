@@ -4,6 +4,11 @@ import { stripe_server } from "@/lib/stripe-server";
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
+const PRICE_MAP: { [key: string]: string } = {
+  [process.env.NEXT_PUBLIC_STRIPE_BASIC_PRICE_ID!]: "basic",
+  [process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID!]: "pro",
+};
+
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const sig = request.headers.get("stripe-signature")!;
@@ -23,18 +28,29 @@ export async function POST(request: NextRequest) {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
-      const userId = session?.metadata?.userId;
+      const userId = session.metadata?.userId;
+      const subscriptionId = session.subscription as string;
 
-      // Save subscription info to Firestore
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      const priceId = subscription.items.data[0].price.id;
+
+      // Save subscription with original price ID
       await adminDb.collection("subscriptions").add({
         userId,
+        stripeSubscriptionId: subscriptionId,
+        stripePriceId: priceId,
+        planType: PRICE_MAP[priceId] || "custom", // Add plan type
         stripeCustomerId: session.customer,
-        stripePriceId: session.subscription,
-        status: "active",
+        status: subscription.status,
+        currentPeriodStart: new Date(
+          subscription.current_period_start * 1000
+        ).toISOString(),
+        currentPeriodEnd: new Date(
+          subscription.current_period_end * 1000
+        ).toISOString(),
         createdAt: new Date().toISOString(),
-        periodEnd: null, // You'll need to get this from the subscription object
+        updatedAt: new Date().toISOString(),
       });
-
       break;
     }
   }

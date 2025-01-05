@@ -122,7 +122,7 @@ export default function Signup() {
         </form>
         <p className="mt-4 text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-indigo-600 hover:text-indigo-500">
+          <Link href="/" className="text-indigo-600 hover:text-indigo-500">
             Login
           </Link>
         </p>
